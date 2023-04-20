@@ -56,6 +56,8 @@ export function SocketProvider({
       }
     );
 
+    console.log("new socket", newSocket);
+
     setSocket(newSocket);
 
     // clean up function in return will close socket connection when
