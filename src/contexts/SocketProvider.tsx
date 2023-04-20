@@ -1,17 +1,19 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
 import { PropsWithChildren } from "react";
 import generateId from "../util/generateId";
+import type { GameState } from "../models";
 
-interface SocketProps {
+interface Props {
   userId: string;
   setUserId: React.Dispatch<React.SetStateAction<string>>;
+  gameId: string;
+  setGameId: React.Dispatch<React.SetStateAction<string>>;
 }
 
+//~~~ Socket.io EVENT types
 interface ServerToClientEvents {
-  noArg: () => void;
-  basicEmit: (a: number, b: string, c: Buffer) => void;
-  withAck: (d: string, callback: (e: number) => void) => void;
+  updateGameState: (newGameState: GameState) => void;
 }
 
 interface ClientToServerEvents {
@@ -19,6 +21,12 @@ interface ClientToServerEvents {
 }
 
 type SocketType = Socket<ServerToClientEvents, ClientToServerEvents>;
+
+interface ProviderValue {
+  socket: SocketType | null;
+  gameState: GameState | null;
+  userId: string;
+}
 
 // create socket context
 const SocketContext = React.createContext<SocketType | null>(null);
@@ -33,8 +41,11 @@ export function useSocket() {
 export function SocketProvider({
   userId,
   setUserId,
+  gameId,
+  setGameId,
   children,
-}: PropsWithChildren<SocketProps>) {
+}: PropsWithChildren<Props>) {
+  // ~~~~~~~~~~~~ Socket Logic ~~~~~~~~~~~~
   const [socket, setSocket] = useState<SocketType | null>(null);
 
   // create new socket on initial render, and if the user's id ever changes
@@ -56,8 +67,6 @@ export function SocketProvider({
       }
     );
 
-    console.log("new socket", newSocket);
-
     setSocket(newSocket);
 
     // clean up function in return will close socket connection when
@@ -67,7 +76,43 @@ export function SocketProvider({
     };
   }, [userId, setSocket, setUserId]);
 
-  // create socket provider, pass it the socket now stored in state.
+  // ~~~~~~~~~~~~~ gameState Logic ~~~~~~~~~~~~~~~~
+  // update gameState in state
+  const [gameState, setGameState] = useState<GameState | null>(null);
+
+  const updateGameState = useCallback(
+    (newGameState: GameState) => {
+      if (newGameState.gameId !== gameId) {
+        setGameId(newGameState.gameId);
+      }
+      setGameState(newGameState);
+    },
+    [setGameId, setGameState, gameId]
+  );
+
+  // set up listeners for gamestate updates
+  useEffect(() => {
+    // if we do not have a socket, do nothing
+    if (socket == null) return;
+    // create 'update gamestate' socket event listener
+    // when update recieved, pass arguments to updateGameState
+    socket.on("updateGameState", (newGameState: GameState) =>
+      updateGameState(newGameState)
+    );
+
+    // clean up: remove event listener when client navigates away from page
+    return () => {
+      socket.off("updateGameState");
+    };
+  }, [socket, updateGameState]);
+
+  // ~~~~~~ PROVIDER VALUE ~~~~~~~
+  const value: ProviderValue = {
+    gameState,
+    userId,
+    socket,
+  };
+
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
