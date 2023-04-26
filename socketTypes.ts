@@ -8,6 +8,16 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   createGameState: (userName: string) => void;
+  enterExistingGame: (userName: string) => void;
+}
+
+export interface InterServerEvents {
+  ping: () => void;
+}
+
+export interface SocketData {
+  name: string;
+  age: number;
 }
 
 export type ClientSocketType = Socket<ServerToClientEvents, ClientToServerEvents>;

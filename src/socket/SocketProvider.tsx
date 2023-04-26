@@ -12,17 +12,19 @@ import {
 interface Props {
   userId: string;
   setUserId: React.Dispatch<React.SetStateAction<string>>;
+  userName: string;
 }
 
 export interface ProviderValue {
   socket: ClientSocketType | null;
   gameState: GameState | null;
   userId: string;
-  requestNewGameState: (userName: string) => void;
+  createGameState: () => void;
+  enterExistingGame: () => void;
 }
 
 // create socket context
-const SocketContext = React.createContext<ClientSocketType | null>(null);
+const SocketContext = React.createContext<ProviderValue | null>(null);
 
 // export socket context, this will be imported into children components of provider
 // that use the socket
@@ -34,6 +36,7 @@ export function useSocket() {
 export function SocketProvider({
   userId,
   setUserId,
+  userName,
   children,
 }: PropsWithChildren<Props>) {
   // ~~~~~~~~~~~~ Socket Logic ~~~~~~~~~~~~
@@ -77,9 +80,10 @@ export function SocketProvider({
     if (socket == null) return;
     // create 'update gamestate' socket event listener
     // when update recieved, update local gameState
-    socket.on("updateGameState", (updatedGameState: GameState) =>
-      setGameState(updatedGameState)
-    );
+    socket.on("updateGameState", (updatedGameState: GameState) => {
+      setGameState(updatedGameState);
+      console.log("updatedGameState", updatedGameState);
+    });
 
     // clean up: remove event listener when client navigates away from page
     return () => {
@@ -88,8 +92,20 @@ export function SocketProvider({
   }, [socket]);
 
   // ~~~~~ socket.io actions (outgoing) ~~~~~~
-  function requestNewGameState(userName: string) {
-    socket?.emit("createGameState", userName);
+  function createGameState() {
+    if (userName) {
+      socket?.emit("createGameState", userName);
+    } else {
+      alert("Please enter your name!");
+    }
+  }
+
+  function enterExistingGame() {
+    if (userName) {
+      socket?.emit("enterExistingGame", userName);
+    } else {
+      alert("Please enter your name!");
+    }
   }
 
   // ~~~~~~ PROVIDER VALUE ~~~~~~~
@@ -97,10 +113,11 @@ export function SocketProvider({
     gameState,
     userId,
     socket,
-    requestNewGameState,
+    createGameState,
+    enterExistingGame,
   };
 
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
   );
 }
