@@ -1,21 +1,23 @@
 import "./App.css";
 import { useState } from "react";
-import { SocketProvider } from "./contexts/SocketProvider";
+import { SocketProvider } from "./socket/SocketProvider";
 import useLocalStorage from "./hooks/useLocalStorage";
 import Header from "./components/Header";
 import Welcome from "./components/Welcome";
+import Login from "./components/Login";
 
 function App() {
-  const [gameId, setGameId] = useState<string>("");
   const [userId, setUserId] = useLocalStorage("userId", "");
+  const [userName, setUserName] = useLocalStorage("userName", "");
 
   const headerIsDisplayed = false;
 
   return (
     <div className="App d-flex justify-content-center align-items-center">
-      {headerIsDisplayed && <Header gameId={gameId} userId={userId} />}
+      {headerIsDisplayed && <Header userId={userId} />}
       <SocketProvider userId={userId} setUserId={setUserId}>
-        <Welcome />
+        <Welcome userName={userName} />
+        <Login />
       </SocketProvider>
     </div>
   );

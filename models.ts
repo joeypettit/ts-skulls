@@ -15,10 +15,10 @@ export class Player {
     points: number;
     isPartyLeader: boolean;
 
-    constructor(playerId: string, playerName: string, isPartyLeader: boolean){
-        this.name = playerName;
+    constructor(id: string, name: string, isPartyLeader: boolean){
+        this.name = name;
         this.isPlayerTurn = false;
-        this.id = playerId;
+        this.id = id;
         this.isConnected = true;
         this.allCards = [];
         this.cardsInHand = [];
@@ -46,7 +46,7 @@ export class GameState {
     players: Player[];
     currentBet: Bet | null;
 
-    constructor( firstPlayerId: string, firstPlayerName: string) {
+    constructor( userId: string, playerName: string) {
         this.gameId = "1234";
         this.inProgress = false;
         this.gamePhase = "pre-game";
@@ -54,6 +54,6 @@ export class GameState {
         this.firstToPlayIndex = 0;
         this.playerTurnIndex = 0;
         this.currentBet = null;
-        this.players = [new Player(firstPlayerId, firstPlayerName, true)];
+        this.players = [new Player(userId, playerName, true)];
     }
 }

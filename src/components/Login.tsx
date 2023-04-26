@@ -1,11 +1,9 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import generateId from "../util/generateId";
-import { useGameState } from "../Contexts/GameStateProvider";
 
-function LoginPage({ setGameId }) {
+function Login() {
   // import function from GameStateProvider
   const { requestNewGameState, requestAddPlayerToGame } = useGameState();
   // this ref points to game id input on "enter an exisiting game"
@@ -128,4 +126,4 @@ function LoginPage({ setGameId }) {
   );
 }
 
-export default LoginPage;
+export default Login;
