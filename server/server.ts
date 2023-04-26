@@ -28,7 +28,7 @@ io.on("connection", (socket) => {
 
     console.log('testing map', activeGameStates.get(gameId));
 
-    
+    io.in(gameId).emit("updateGameState", gameState);
 
 
 

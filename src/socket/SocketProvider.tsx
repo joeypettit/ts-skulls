@@ -3,31 +3,26 @@ import { io, Socket } from "socket.io-client";
 import { PropsWithChildren } from "react";
 import generateId from "../util/generateId";
 import type { GameState } from "../../models";
+import {
+  ServerToClientEvents,
+  ClientToServerEvents,
+  ClientSocketType,
+} from "../../socketTypes";
 
 interface Props {
   userId: string;
   setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-//~~~ Socket.io EVENT types
-interface ServerToClientEvents {
-  updateGameState: (updatedGameState: GameState) => void;
-}
-
-interface ClientToServerEvents {
-  createGameState: (userName: string) => void;
-}
-
-type SocketType = Socket<ServerToClientEvents, ClientToServerEvents>;
-
-interface ProviderValue {
-  socket: SocketType | null;
+export interface ProviderValue {
+  socket: ClientSocketType | null;
   gameState: GameState | null;
   userId: string;
+  requestNewGameState: (userName: string) => void;
 }
 
 // create socket context
-const SocketContext = React.createContext<SocketType | null>(null);
+const SocketContext = React.createContext<ClientSocketType | null>(null);
 
 // export socket context, this will be imported into children components of provider
 // that use the socket
@@ -42,7 +37,7 @@ export function SocketProvider({
   children,
 }: PropsWithChildren<Props>) {
   // ~~~~~~~~~~~~ Socket Logic ~~~~~~~~~~~~
-  const [socket, setSocket] = useState<SocketType | null>(null);
+  const [socket, setSocket] = useState<ClientSocketType | null>(null);
 
   // create new socket on initial render, and if the user's id ever changes
   // this is put into a useEffect to avoid reconnecting every re-render
@@ -93,7 +88,6 @@ export function SocketProvider({
   }, [socket]);
 
   // ~~~~~ socket.io actions (outgoing) ~~~~~~
-
   function requestNewGameState(userName: string) {
     socket?.emit("createGameState", userName);
   }
@@ -103,6 +97,7 @@ export function SocketProvider({
     gameState,
     userId,
     socket,
+    requestNewGameState,
   };
 
   return (
