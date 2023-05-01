@@ -17,7 +17,7 @@ function App() {
       {headerIsDisplayed && <Header userId={userId} />}
       <SocketProvider userId={userId} setUserId={setUserId} userName={userName}>
         <UserNameForm userName={userName} setUserName={setUserName} />
-        <EnterGameForm />
+        {userName && <EnterGameForm />}
       </SocketProvider>
     </div>
   );

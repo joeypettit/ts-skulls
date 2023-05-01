@@ -24,7 +24,8 @@
   "scripts": {
     "client": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test-dom": "react-scripts test",
+    "test-server": "jest",
     "eject": "react-scripts eject",
     "server": "npx nodemon ./server/server.ts"
   },
