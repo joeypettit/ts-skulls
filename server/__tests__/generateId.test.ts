@@ -1,4 +1,4 @@
-const generateId = require('../util/generateId');
+import generateId from "../util/generateId";
 
 describe("generateId", ()=>{
     test("Return ID with length of argument", () => {
