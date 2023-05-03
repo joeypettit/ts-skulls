@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/Form";
-import { useSocket } from "../socket/SocketProvider";
+import { useSocket } from "../providers/SocketProvider";
 
 function EnterGameForm() {
   const socket = useSocket();

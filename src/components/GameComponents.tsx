@@ -1,6 +1,6 @@
 import React from "react";
 import GameLobby from "./GameLobby";
-import { useSocket } from "../socket/SocketProvider";
+import { useSocket } from "../providers/SocketProvider";
 
 export default function GameComponents({ userId }: { userId: string }) {
   const socket = useSocket();

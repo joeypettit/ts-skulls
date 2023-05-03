@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState } from "react";
-import { SocketProvider } from "./socket/SocketProvider";
+import { SocketProvider } from "./providers/SocketProvider";
 import useLocalStorage from "./hooks/useLocalStorage";
 import Header from "./components/Header";
 import UserNameForm from "./components/UserNameForm";
@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App d-flex justify-content-center align-items-center">
       {headerIsDisplayed && <Header userId={userId} />}
-      <SocketProvider userId={userId} setUserId={setUserId} userName={userName}>
+      <SocketProvider userId={userId} setUserId={setUserId}>
         <UserNameForm userName={userName} setUserName={setUserName} />
         {userName && <EnterGameForm />}
         <GameComponents userId={userId} />

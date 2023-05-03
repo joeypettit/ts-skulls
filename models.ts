@@ -57,4 +57,17 @@ export class GameState {
         this.currentBet = null;
         this.players = new Map([[userId, new Player(userId, playerName, true)]]);
     }
+
+    get getPartyLeaderId(){
+        let id = null;
+        this.players.forEach((player)=>{
+            if(player.isPartyLeader === true){
+                id = player.id;
+                return;
+            }
+        })
+        return id;
+        }
+    
+    
 }
