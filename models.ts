@@ -43,10 +43,11 @@ export class GameState {
     currentRound: number;
     firstToPlayIndex: number;
     playerTurnIndex: number;
-    players: Player[];
+    players: Map<string, Player>;
     currentBet: Bet | null;
 
     constructor( userId: string, playerName: string) {
+
         this.gameId = "1234";
         this.inProgress = false;
         this.phase = "game-lobby";
@@ -54,6 +55,6 @@ export class GameState {
         this.firstToPlayIndex = 0;
         this.playerTurnIndex = 0;
         this.currentBet = null;
-        this.players = [new Player(userId, playerName, true)];
+        this.players = new Map([[userId, new Player(userId, playerName, true)]]);
     }
 }
