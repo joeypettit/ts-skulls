@@ -5,6 +5,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import Header from "./components/Header";
 import UserNameForm from "./components/UserNameForm";
 import EnterGameForm from "./components/EnterGameForm";
+import GameComponents from "./components/GameComponents";
 
 function App() {
   const [userId, setUserId] = useLocalStorage("userId", "");
@@ -18,6 +19,7 @@ function App() {
       <SocketProvider userId={userId} setUserId={setUserId} userName={userName}>
         <UserNameForm userName={userName} setUserName={setUserName} />
         {userName && <EnterGameForm />}
+        <GameComponents userId={userId} />
       </SocketProvider>
     </div>
   );

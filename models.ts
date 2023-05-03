@@ -39,7 +39,7 @@ export interface Bet {
 export class GameState {
     gameId: string;
     inProgress: boolean;
-    gamePhase: "pre-game" | "game-lobby" | "players-reordering" | "set-round" | "play-or-bet" | "raise-or-pass" | "flip-cards" | "better-wins" | "better-lost";
+    phase: "game-lobby" | "players-reordering" | "set-round" | "play-or-bet" | "raise-or-pass" | "flip-cards" | "better-wins" | "better-lost";
     currentRound: number;
     firstToPlayIndex: number;
     playerTurnIndex: number;
@@ -49,7 +49,7 @@ export class GameState {
     constructor( userId: string, playerName: string) {
         this.gameId = "1234";
         this.inProgress = false;
-        this.gamePhase = "pre-game";
+        this.phase = "game-lobby";
         this.currentRound = 0;
         this.firstToPlayIndex = 0;
         this.playerTurnIndex = 0;

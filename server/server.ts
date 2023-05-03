@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 
 
 // Map contains all currently active gamestates
-const activeGameStates = new Map();
+const activeGameStates = new Map<string, GameState>(null);
 
 
 io.on("connection", (socket) => {
@@ -33,6 +33,7 @@ io.on("connection", (socket) => {
 
     io.in(gameId).emit("updateGameState", gameState);
     })
+
     
 });
 
