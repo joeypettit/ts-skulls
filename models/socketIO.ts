@@ -1,13 +1,12 @@
 import type { Socket } from "socket.io-client";
-import { GameState } from "./models";
-
+import GameState from "./Game";
 
 export interface ServerToClientEvents {
-  updateGameState: (updatedGameState: GameState) => void;
+  updateGame: (updatedGameState: GameState) => void;
 }
 
 export interface ClientToServerEvents {
-  createGameState: (userName: string) => void;
+  createGame: (userName: string) => void;
   enterExistingGame: (userName: string) => void;
 }
 

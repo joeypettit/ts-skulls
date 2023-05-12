@@ -1,18 +1,18 @@
 import { useRef } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/Form";
-import { useSocket } from "../providers/SocketProvider";
+import { useGameContext } from "../providers/GameStateProvider";
 
 function EnterGameForm() {
-  const socket = useSocket();
+  const game = useGameContext();
   const gameIdRef = useRef<HTMLInputElement | null>(null);
 
   function handleStartNewGame() {
-    socket?.createGameState();
+    game?.actions.createGame();
   }
 
   function handleEnterGame() {
-    socket?.enterExistingGame();
+    game?.actions.enterExistingGame();
   }
 
   return (

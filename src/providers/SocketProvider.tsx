@@ -6,7 +6,7 @@ import {
   ServerToClientEvents,
   ClientToServerEvents,
   ClientSocketType,
-} from "../../socketTypes";
+} from "../../models/socketIO";
 
 interface Props {
   userId: string;

@@ -1,7 +1,7 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from "../socketTypes";
-import { GameState } from "../models";
+import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from "../models/socketIO";
+import Game from "../models/Game";
 import generateId from "./util/generateId";
 
 // socket.io server
@@ -13,14 +13,14 @@ SocketData>(httpServer);
 const PORT = process.env.PORT || 5000;
 
 
-// Map contains all currently active gamestates
-const activeGameStates = new Map<string, GameState>(null);
+// Map contains all currently active game
+const activeGames = new Map<string, Game>(null);
 
 
 io.on("connection", (socket) => {
     console.log("connected", socket.handshake.query.userId);
 
-    socket.on("createGameState", (userName)=>{
+    socket.on("createGame", (userName)=> {
         const userId = String(socket.handshake.query.userId);
         const gameId = generateId(3);
     
@@ -28,10 +28,10 @@ io.on("connection", (socket) => {
     socket.join(gameId);
     socket.join(userId);
 
-    const gameState = new GameState(userId, userName);
-    activeGameStates.set(gameId, gameState);
+    const game = new Game(userId, userName);
+    activeGames.set(gameId, game);
 
-    io.in(gameId).emit("updateGameState", gameState);
+    io.in(gameId).emit("updateGame", game);
     })
 
     
