@@ -5,10 +5,14 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import { GamePhase } from "../../models/GamePhase";
 
-export default function GameLobby({ userId }: { userId: string }) {
+function GameLobby({ userId }: { userId: string }) {
   const game = useGameContext().game;
   const user = useGameContext().user;
   const actions = useGameContext().actions;
+
+  function toggleReorder(): void {}
+
+  function handleReadyToPlay(): void {}
 
   return (
     <Container className="text-center bg-light p-3 rounded">
@@ -31,8 +35,41 @@ export default function GameLobby({ userId }: { userId: string }) {
       {/* REORDER PLAYERS COMPONENT */}
 
       <div className="m-2">
-        {game?.gamePhase === GamePhase.PlayerReordering && user?.isPartyLeader}
+        {!(game?.gamePhase === GamePhase.PlayersReordering) &&
+          user?.isPartyLeader && (
+            <Button onClick={toggleReorder}>Re-order Players</Button>
+          )}
+        {game?.gamePhase === GamePhase.PlayersReordering &&
+          user?.isPartyLeader && (
+            <Button onClick={toggleReorder}>Cancel ReOrder</Button>
+          )}
       </div>
+      <p>Order Of Play:</p>
+      <ul>
+        {Array.from(game!.players.values()).map((player, index) => {
+          return <li key={index}>{index + 1 + ": " + player.name}</li>;
+        })}
+      </ul>
+
+      {user?.isPartyLeader ? (
+        <div>
+          <div>When the group is ready, press "Ready"</div>
+          <Button
+            disabled={
+              game?.gamePhase === GamePhase.PlayersReordering ? true : false
+            }
+            onClick={() => handleReadyToPlay()}
+          >
+            Ready
+          </Button>
+        </div>
+      ) : (
+        <div>
+          When the group is ready, {game?.partyLeader.name} will press "Ready"
+        </div>
+      )}
     </Container>
   );
 }
+
+export default GameLobby;

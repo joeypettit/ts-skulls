@@ -53,6 +53,10 @@ export default class Game {
         return this._playerTurnOrder;
     }
 
+    get players(){
+        return this._players;
+    }
+
     get partyLeader(): Player {
         let partyLeader;
         this._players.forEach((player)=>{

@@ -1,6 +1,6 @@
 export enum GamePhase {
     Lobby = "LOBBY",
-    PlayerReordering = "PLAYERS-REORDERING",
+    PlayersReordering = "PLAYERS-REORDERING",
     SetRound = "SET-ROUND",
     PlayOrBet = "PLAY-OR-BET",
     RaiseOrPass = "RAISE-OR-PASS",
