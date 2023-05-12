@@ -5,7 +5,6 @@ import { useSocket } from "./SocketProvider";
 
 interface Props {
   userId: string;
-  setUserId: React.Dispatch<React.SetStateAction<string>>;
   userName: string;
 }
 

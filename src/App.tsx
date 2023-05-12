@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import UserNameForm from "./components/UserNameForm";
 import EnterGameForm from "./components/EnterGameForm";
 import GameComponents from "./components/GameComponents";
-
+import { GameStateProvider } from "./providers/GameStateProvider";
 function App() {
   const [userId, setUserId] = useLocalStorage("userId", "");
   const [userName, setUserName] = useLocalStorage("userName", "");
@@ -17,9 +17,11 @@ function App() {
     <div className="App d-flex justify-content-center align-items-center">
       {headerIsDisplayed && <Header userId={userId} />}
       <SocketProvider userId={userId} setUserId={setUserId}>
-        <UserNameForm userName={userName} setUserName={setUserName} />
-        {userName && <EnterGameForm />}
-        <GameComponents userId={userId} />
+        <GameStateProvider userId={userId} userName={userName}>
+          <UserNameForm userName={userName} setUserName={setUserName} />
+          {userName && <EnterGameForm />}
+          <GameComponents userId={userId} />
+        </GameStateProvider>
       </SocketProvider>
     </div>
   );
