@@ -8,11 +8,11 @@ function EnterGameForm() {
   const gameIdRef = useRef<HTMLInputElement | null>(null);
 
   function handleStartNewGame() {
-    game?.actions.createGame();
+    game.actions.createGame();
   }
 
   function handleEnterGame() {
-    game?.actions.enterExistingGame();
+    game.actions.enterExistingGame();
   }
 
   return (

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { PropsWithChildren } from "react";
 import { useSocket } from "./SocketProvider";
 import type Game from "../../models/Game";
+import type Player from "../../models/Player";
 
 interface Props {
   userId: string;
@@ -10,7 +11,7 @@ interface Props {
 
 export interface ProviderValue {
   game: Game | null;
-  userId: string;
+  user: Player | undefined;
   actions: {
     createGame: () => void;
     enterExistingGame: () => void;
@@ -39,8 +40,9 @@ export function GameProvider({
   const socket = useSocket().socket;
 
   // ~~~~~~~~~~~~~ game Logic ~~~~~~~~~~~~~~~~
-  // game in local
   const [game, setGame] = useState<Game | null>(null);
+  // player object of this user
+  const [user, setUser] = useState<Player | undefined>(undefined);
 
   // set up listeners for game updates
   useEffect(() => {
@@ -50,6 +52,7 @@ export function GameProvider({
     // when update recieved, update local game
     socket.on("updateGame", (updatedGame: Game) => {
       setGame(updatedGame);
+      setUser(updatedGame?.getPlayerById(userId));
       console.log("updatedGame", updatedGame);
     });
 
@@ -78,7 +81,7 @@ export function GameProvider({
 
   // ~~~~~~ PROVIDER VALUE ~~~~~~~
   const value: ProviderValue = {
-    userId,
+    user,
     game,
     actions: {
       createGame,
