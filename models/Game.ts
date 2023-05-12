@@ -1,6 +1,8 @@
 import Player from "./Player";
 import Bet from "./Bet";
 import {GamePhase} from './GamePhase';
+import Utility from './Utility';
+
 
 
 export default class Game {
@@ -12,10 +14,10 @@ export default class Game {
     private _playerTurnOrder: string[];
     private _players: Map<string, Player>;
     private _currentBet: Bet | null;
+    private _currentPlayer: string;
 
     constructor( userId: string, playerName: string) {
-
-        this._gameId = "1234";
+        this._gameId = Utility.generateId(3);
         this._inProgress = false;
         this._gamePhase = GamePhase.Lobby;
         this._currentRound = 0;
@@ -23,6 +25,7 @@ export default class Game {
         this._playerTurnOrder = [];
         this._currentBet = null;
         this._players = new Map([[userId, new Player(userId, playerName, true)]]);
+        this._currentPlayer = userId;
     }
 
     get gameId(){
@@ -55,6 +58,10 @@ export default class Game {
 
     get players(){
         return this._players;
+    }
+
+    get currentPlayer(){
+        return this._currentPlayer;
     }
 
     get partyLeader(): Player {

@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { useSocket } from "../providers/SocketProvider";
 import { useGameContext } from "../providers/GameStateProvider";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import { GamePhase } from "../../models/GamePhase";
+import ReorderPlayers from "./ReorderPlayers";
 
 function GameLobby({ userId }: { userId: string }) {
-  const game = useGameContext().game;
-  const user = useGameContext().user;
-  const actions = useGameContext().actions;
+  const { game, user, actions } = useGameContext();
 
-  function toggleReorder(): void {}
+  function handleToggleReorder(): void {
+    actions.toggleReorder();
+  }
 
   function handleReadyToPlay(): void {}
 
@@ -32,16 +31,16 @@ function GameLobby({ userId }: { userId: string }) {
         above.
       </p>
 
-      {/* REORDER PLAYERS COMPONENT */}
+      {game?.gamePhase === GamePhase.PlayersReordering && <ReorderPlayers />}
 
       <div className="m-2">
         {!(game?.gamePhase === GamePhase.PlayersReordering) &&
           user?.isPartyLeader && (
-            <Button onClick={toggleReorder}>Re-order Players</Button>
+            <Button onClick={handleToggleReorder}>Re-order Players</Button>
           )}
         {game?.gamePhase === GamePhase.PlayersReordering &&
           user?.isPartyLeader && (
-            <Button onClick={toggleReorder}>Cancel ReOrder</Button>
+            <Button onClick={handleToggleReorder}>Cancel ReOrder</Button>
           )}
       </div>
       <p>Order Of Play:</p>

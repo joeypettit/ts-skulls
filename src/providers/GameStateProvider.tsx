@@ -15,6 +15,7 @@ export interface ProviderValue {
   actions: {
     createGame: () => void;
     enterExistingGame: () => void;
+    toggleReorder: () => void;
   };
 }
 
@@ -63,7 +64,7 @@ export function GameProvider({
   }, [socket]);
 
   // ~~~~~ Game actions (outgoing) ~~~~~~
-  function createGame() {
+  function createGame(): void {
     if (userName) {
       socket?.emit("createGame", userName);
     } else {
@@ -71,12 +72,16 @@ export function GameProvider({
     }
   }
 
-  function enterExistingGame() {
+  function enterExistingGame(): void {
     if (userName) {
       socket?.emit("enterExistingGame", userName);
     } else {
       alert("Please enter your name!");
     }
+  }
+
+  function toggleReorder(): void {
+    socket?.emit("toggleReorder");
   }
 
   // ~~~~~~ PROVIDER VALUE ~~~~~~~
@@ -86,6 +91,7 @@ export function GameProvider({
     actions: {
       createGame,
       enterExistingGame,
+      toggleReorder,
     },
   };
 

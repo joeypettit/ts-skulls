@@ -24,14 +24,32 @@ io.on("connection", (socket) => {
         const userId = String(socket.handshake.query.userId);
         const gameId = generateId(3);
     
-    // create new rooms based on gameId and userId
-    socket.join(gameId);
-    socket.join(userId);
+        // create new rooms based on gameId and userId
+        socket.join(gameId);
+        socket.join(userId);
 
-    const game = new Game(userId, userName);
-    activeGames.set(gameId, game);
+        const game = new Game(userId, userName);
+        activeGames.set(gameId, game);
 
-    io.in(gameId).emit("updateGame", game);
+        io.in(gameId).emit("updateGame", game);
+    })
+
+    socket.on("enterExistingGame", (gameId)=>{
+        const userId = String(socket.handshake.query.userId);
+        socket.join(gameId);
+        socket.join(userId);
+
+        const game = activeGames.get(gameId);
+
+        if(game){
+            io.in(gameId).emit("updateGame", game);
+        }
+
+
+    })
+
+    socket.on("toggleReorder", ()=>{
+
     })
 
     
