@@ -81,4 +81,10 @@ export default class Game {
     getPlayerById(userId: string){
         return this._players.get(userId);
         }
+
+    addNewPlayer(userId: string, userName: string){
+        const newPlayer = new Player(userId, userName, false);
+        this._players.set(userId, newPlayer);
+        return Game;
+    }
     }

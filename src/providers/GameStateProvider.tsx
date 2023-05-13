@@ -14,7 +14,7 @@ export interface ProviderValue {
   user: Player | undefined;
   actions: {
     createGame: () => void;
-    enterExistingGame: () => void;
+    enterExistingGame: (gameId: string) => void;
     toggleReorder: () => void;
   };
 }
@@ -72,9 +72,9 @@ export function GameProvider({
     }
   }
 
-  function enterExistingGame(): void {
+  function enterExistingGame(gameId: string): void {
     if (userName) {
-      socket?.emit("enterExistingGame", userName);
+      socket?.emit("enterExistingGame", userName, gameId);
     } else {
       alert("Please enter your name!");
     }

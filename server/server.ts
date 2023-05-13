@@ -34,18 +34,19 @@ io.on("connection", (socket) => {
         io.in(gameId).emit("updateGame", game);
     })
 
-    socket.on("enterExistingGame", (gameId)=>{
+    socket.on("enterExistingGame", (userName, gameId)=>{
         const userId = String(socket.handshake.query.userId);
         socket.join(gameId);
         socket.join(userId);
 
         const game = activeGames.get(gameId);
-
+        
         if(game){
+            game.addNewPlayer(userName, userId);
             io.in(gameId).emit("updateGame", game);
+        } else {
+            // emit error message
         }
-
-
     })
 
     socket.on("toggleReorder", ()=>{
