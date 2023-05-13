@@ -91,4 +91,40 @@ export default class Game {
         this._players.set(userId, newPlayer);
         return Game;
     }
+
+    beginFirstRound(){
+        this._inProgress = true;
+
+        this._players.forEach((player)=>{
+            player.populateAllCards();
+        })
+
     }
+
+    beginNewRound(){
+          // prep for new round
+        prepPlayerHands(gameState);
+
+        // assign a random player to be the first dealer
+        const firstToPlay = this.getRandomPlayerId();
+        this._currentPlayer = firstToPlay;
+        gameState.players[firstToPlayIndex].isPlayerTurn = true;
+        this._firstToPlayIndex = firstToPlayIndex;
+        this._gamePhase = GamePhase.SetRound;
+
+    }
+
+    getRandomPlayerId(): string {
+        const numOfPlayers = this._playerTurnOrder.length;
+        const playerIndex = Utility.randomNumberBetweenZeroAnd(numOfPlayers);
+        const randomPlayerId = this._playerTurnOrder[playerIndex];
+        return randomPlayerId;
+        
+    }
+
+
+
+
+
+    }
+

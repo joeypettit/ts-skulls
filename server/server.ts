@@ -47,7 +47,7 @@ io.on("connection", (socket) => {
         if(game){
             game.addNewPlayer(userName, userId);
             io.in(gameId).emit("updateGame", game);
-        } else {
+        }else{
             // emit error message
         }
     })
@@ -58,15 +58,23 @@ io.on("connection", (socket) => {
         if(game){
             if(game.gamePhase === GamePhase.Lobby){
                 game.gamePhase = GamePhase.PlayersReordering;
-            } else if( game.gamePhase === GamePhase.PlayersReordering){
+            }else if( game.gamePhase === GamePhase.PlayersReordering){
                 game.gamePhase = GamePhase.Lobby;
-            } else{
+            }else{
                 throw('in toggleReorder: incorrect gamephase type');
             }
             io.in(gameId).emit("updateGame", game);
-        } else{
+        }else{
             throw('In toggleReorder: no game found');
         }
+    });
+    socket.on("startNewGame", (gameId)=> {
+        const game = activeGames.get(gameId);
+
+        if(game){
+            
+        }
+
     })
 
     

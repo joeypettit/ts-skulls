@@ -1,4 +1,5 @@
 export default interface Card {
-    id: number;
-    isSkull: boolean;
+    id: number | 'censored';
+    isSkull: boolean | 'censored';
+    isRevealed: boolean;
 }

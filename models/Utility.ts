@@ -18,4 +18,9 @@ export default class Utility{
         }
         return id;
       }
+
+      static randomNumberBetweenZeroAnd(num: number){
+        const randomNum = Math.floor(Math.random() * num);
+        return randomNum;
+      }
 }
