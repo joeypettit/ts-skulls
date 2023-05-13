@@ -4,3 +4,6 @@ Upgrades:
 -conditional rendering is controlled using primarily the gamephase enum rather than checking for multiple seemingly unrelated conditionals in gamestate
 
 -
+
+Things to do:
+-incorporate error handler on client (error context?)

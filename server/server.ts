@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from "../models/socketIO";
 import Game from "../models/Game";
 import generateId from "./util/generateId";
+import { GamePhase } from "../models/GamePhase";
 
 // socket.io server
 const httpServer = createServer();
@@ -36,6 +37,8 @@ io.on("connection", (socket) => {
 
     socket.on("enterExistingGame", (userName, gameId)=>{
         const userId = String(socket.handshake.query.userId);
+
+        // create new rooms based on gameId and userId
         socket.join(gameId);
         socket.join(userId);
 
@@ -49,8 +52,21 @@ io.on("connection", (socket) => {
         }
     })
 
-    socket.on("toggleReorder", ()=>{
+    socket.on("toggleReorder", (gameId)=>{
+        const game = activeGames.get(gameId);
 
+        if(game){
+            if(game.gamePhase === GamePhase.Lobby){
+                game.gamePhase = GamePhase.PlayersReordering;
+            } else if( game.gamePhase === GamePhase.PlayersReordering){
+                game.gamePhase = GamePhase.Lobby;
+            } else{
+                throw('in toggleReorder: incorrect gamephase type');
+            }
+            io.in(gameId).emit("updateGame", game);
+        } else{
+            throw('In toggleReorder: no game found');
+        }
     })
 
     

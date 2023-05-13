@@ -8,7 +8,7 @@ export interface ServerToClientEvents {
 export interface ClientToServerEvents {
   createGame: (userName: string) => void;
   enterExistingGame: (userName: string, gameId: string) => void;
-  toggleReorder: () => void;
+  toggleReorder: (gameId: string) => void;
 }
 
 export interface InterServerEvents {

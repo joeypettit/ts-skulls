@@ -81,7 +81,12 @@ export function GameProvider({
   }
 
   function toggleReorder(): void {
-    socket?.emit("toggleReorder");
+    const gameId = game?.gameId;
+    if (gameId) {
+      socket?.emit("toggleReorder", gameId);
+    } else {
+      alert("Game Not Found");
+    }
   }
 
   // ~~~~~~ PROVIDER VALUE ~~~~~~~

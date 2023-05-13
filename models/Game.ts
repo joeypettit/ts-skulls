@@ -77,6 +77,10 @@ export default class Game {
         }
         return partyLeader;
     }
+
+    set gamePhase(newPhase){
+        this._gamePhase = newPhase;
+    }
     
     getPlayerById(userId: string){
         return this._players.get(userId);
