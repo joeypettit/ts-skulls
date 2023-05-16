@@ -31,6 +31,8 @@ io.on("connection", (socket) => {
 
         const game = new Game(userId, userName);
         activeGames.set(gameId, game);
+        console.log('game', game);
+
 
         io.in(gameId).emit("updateGame", game);
     })
@@ -43,7 +45,7 @@ io.on("connection", (socket) => {
         socket.join(userId);
 
         const game = activeGames.get(gameId);
-        
+
         if(game){
             game.addNewPlayer(userName, userId);
             io.in(gameId).emit("updateGame", game);

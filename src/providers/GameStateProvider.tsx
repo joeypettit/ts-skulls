@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { PropsWithChildren } from "react";
 import { useSocket } from "./SocketProvider";
-import type Game from "../modelsClient/Game";
+import ClientGame from "../modelsClient/ClientGame";
 import type Player from "../modelsClient/Player";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export interface ProviderValue {
-  game: Game | null;
+  game: ClientGame | null;
   user: Player | undefined;
   actions: {
     createGame: () => void;
@@ -42,7 +42,7 @@ export function GameProvider({
   const socket = useSocket().socket;
 
   // ~~~~~~~~~~~~~ game Logic ~~~~~~~~~~~~~~~~
-  const [game, setGame] = useState<Game | null>(null);
+  const [game, setGame] = useState<ClientGame | null>(null);
   // player object of this user
   const [user, setUser] = useState<Player | undefined>(undefined);
 
@@ -52,10 +52,30 @@ export function GameProvider({
     if (socket === null) return;
     // create 'update game' socket event listener
     // when update recieved, update local game
-    socket.on("updateGame", (updateGame: Game) => {
-      setGame(updateGame);
-      setUser(updateGame?.getPlayerById(userId));
-      console.log("updateGame", updateGame);
+    socket.on("updateGame", (incomingGame) => {
+      console.log("game", incomingGame);
+
+      const updatedGame = new ClientGame(
+        incomingGame.id,
+        incomingGame.inProgress,
+        incomingGame.gamePhase,
+        incomingGame.currentRound,
+        incomingGame.firstToPlayId,
+        incomingGame.playerOrder,
+        incomingGame.players,
+        incomingGame.currentBet,
+        incomingGame.currentPlayerId
+      );
+      console.log("updated,", updatedGame);
+      if (updatedGame) {
+        console.log(updatedGame.id, "update");
+
+        // setGame(updatedGame);
+        // setUser(updatedGame.getPlayerById(userId));
+        // console.log("updateGame", updatedGame);
+      } else {
+        throw "no updated game";
+      }
     });
 
     // clean up: remove event listener when client navigates away from page

@@ -18,7 +18,7 @@ function ReorderPlayers() {
       <div className="text-danger">
         <h4>
           The Player to the Left of{" "}
-          {game?.getPlayerById(game?.currentPlayer)?.name}, Press Next
+          {game?.getPlayerById(game?.currentPlayerId)?.name}, Press Next
         </h4>
         {!user?.isPartyLeader && (
           <Button
