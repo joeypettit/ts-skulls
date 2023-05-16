@@ -1,6 +1,6 @@
-import GameLobby from "./GameLobby";
+import GameLobby from "./Lobby";
 import { useGameContext } from "../providers/GameStateProvider";
-import { GamePhase } from "../../models/GamePhase";
+import { GamePhase } from "../modelsClient/GamePhase";
 
 export default function GameComponents({ userId }: { userId: string }) {
   const { game } = useGameContext();

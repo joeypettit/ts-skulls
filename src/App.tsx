@@ -4,7 +4,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import Header from "./components/Header";
 import GameComponents from "./components/GameComponents";
 import { GameProvider } from "./providers/GameStateProvider";
-import PreGameComponents from "./components/PregameComponents";
+import PreGameComponents from "./components/PreGameComponents";
 
 function App() {
   const [userId, setUserId] = useLocalStorage("userId", "");

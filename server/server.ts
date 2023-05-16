@@ -2,7 +2,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from "../models/socketIO";
 import Game from "../models/Game";
-import generateId from "./util/generateId";
+import Utility from "../models/Utility";
 import { GamePhase } from "../models/GamePhase";
 
 // socket.io server
@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
 
     socket.on("createGame", (userName)=> {
         const userId = String(socket.handshake.query.userId);
-        const gameId = generateId(3);
+        const gameId = Utility.generateId(3);
     
         // create new rooms based on gameId and userId
         socket.join(gameId);
@@ -68,10 +68,11 @@ io.on("connection", (socket) => {
             throw('In toggleReorder: no game found');
         }
     });
-    socket.on("startNewGame", (gameId)=> {
+    socket.on("startGame", (gameId)=> {
         const game = activeGames.get(gameId);
 
         if(game){
+            game.prepNewRound();
             
         }
 

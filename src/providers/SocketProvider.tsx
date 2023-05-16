@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 import { PropsWithChildren } from "react";
-import generateId from "../util/generateId";
+import Utility from "../modelsClient/Utility";
 import {
   ServerToClientEvents,
   ClientToServerEvents,
   ClientSocketType,
-} from "../../models/socketIO";
+} from "../modelsClient/socketIO";
 
 interface Props {
   userId: string;
@@ -45,7 +45,7 @@ export function SocketProvider({
     let userIdForSocket: string;
 
     if (!userId) {
-      userIdForSocket = generateId(5);
+      userIdForSocket = Utility.generateId(3);
       setUserId(userIdForSocket);
     } else {
       userIdForSocket = userId;

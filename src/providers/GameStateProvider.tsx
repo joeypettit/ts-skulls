@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { PropsWithChildren } from "react";
 import { useSocket } from "./SocketProvider";
-import type Game from "../../models/Game";
-import type Player from "../../models/Player";
+import type Game from "../modelsClient/Game";
+import type Player from "../modelsClient/Player";
 
 interface Props {
   userId: string;
@@ -16,6 +16,7 @@ export interface ProviderValue {
     createGame: () => void;
     enterExistingGame: (gameId: string) => void;
     toggleReorder: () => void;
+    startGame: () => void;
   };
 }
 
@@ -51,17 +52,17 @@ export function GameProvider({
     if (socket === null) return;
     // create 'update game' socket event listener
     // when update recieved, update local game
-    socket.on("updateGame", (updatedGame: Game) => {
-      setGame(updatedGame);
-      setUser(updatedGame?.getPlayerById(userId));
-      console.log("updatedGame", updatedGame);
+    socket.on("updateGame", (updateGame: Game) => {
+      setGame(updateGame);
+      setUser(updateGame?.getPlayerById(userId));
+      console.log("updateGame", updateGame);
     });
 
     // clean up: remove event listener when client navigates away from page
     return () => {
       socket.off("updateGame");
     };
-  }, [socket]);
+  }, [socket, userId]);
 
   // ~~~~~ Game actions (outgoing) ~~~~~~
   function createGame(): void {
@@ -73,17 +74,25 @@ export function GameProvider({
   }
 
   function enterExistingGame(gameId: string): void {
-    if (userName) {
-      socket?.emit("enterExistingGame", userName, gameId);
+    if (userName && socket) {
+      socket.emit("enterExistingGame", userName, gameId);
     } else {
       alert("Please enter your name!");
     }
   }
 
   function toggleReorder(): void {
-    const gameId = game?.gameId;
-    if (gameId) {
-      socket?.emit("toggleReorder", gameId);
+    const gameId = game?.id;
+    if (gameId && socket) {
+      socket.emit("toggleReorder", gameId);
+    } else {
+      alert("Game Not Found");
+    }
+  }
+
+  function startGame(): void {
+    if (game && socket) {
+      socket.emit("startGame", game.id);
     } else {
       alert("Game Not Found");
     }
@@ -97,6 +106,7 @@ export function GameProvider({
       createGame,
       enterExistingGame,
       toggleReorder,
+      startGame,
     },
   };
 

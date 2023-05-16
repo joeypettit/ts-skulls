@@ -1,7 +1,7 @@
 import { useGameContext } from "../providers/GameStateProvider";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { GamePhase } from "../../models/GamePhase";
+import { GamePhase } from "../modelsClient/GamePhase";
 import ReorderPlayers from "./ReorderPlayers";
 
 function GameLobby({ userId }: { userId: string }) {
@@ -11,14 +11,16 @@ function GameLobby({ userId }: { userId: string }) {
     actions.toggleReorder();
   }
 
-  function handleReadyToPlay(): void {}
+  function handleReadyToPlay(): void {
+    actions.startGame();
+  }
 
   return (
     <Container className="text-center bg-light p-3 rounded">
       <div className="py-3">Welcome {game?.getPlayerById(userId)?.name}</div>
       <div className="bg-light p-3 rounded">
         <h1>
-          Your Game ID is: <strong>{game?.gameId}</strong>
+          Your Game ID is: <strong>{game?.id}</strong>
         </h1>
         {user?.isPartyLeader ? (
           <h4>You are the party leader!</h4>
@@ -45,26 +47,28 @@ function GameLobby({ userId }: { userId: string }) {
       </div>
       <p>Order Of Play:</p>
       <ul>
-        {Array.from(game!.players.values()).map((player, index) => {
-          return <li key={index}>{index + 1 + ": " + player.name}</li>;
+        {game?.playerTurnOrder.map((playerId, index) => {
+          const playerName = game.players.get(playerId)?.name;
+          const playerOrderNum = index + 1;
+          return <li key={playerId}>{playerOrderNum + ": " + playerName}</li>;
         })}
       </ul>
 
       {user?.isPartyLeader ? (
         <div>
-          <div>When the group is ready, press "Ready"</div>
+          <div>When the group is ready, press "Start"</div>
           <Button
             disabled={
               game?.gamePhase === GamePhase.PlayersReordering ? true : false
             }
             onClick={() => handleReadyToPlay()}
           >
-            Ready
+            Start
           </Button>
         </div>
       ) : (
         <div>
-          When the group is ready, {game?.partyLeader.name} will press "Ready"
+          When the group is ready, {game?.partyLeader.name} will press "Start"
         </div>
       )}
     </Container>

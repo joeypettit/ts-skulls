@@ -7,3 +7,6 @@ Upgrades:
 
 Things to do:
 -incorporate error handler on client (error context?)
+-Style front end without using vanilla css
+
+-
