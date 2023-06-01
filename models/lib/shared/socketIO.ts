@@ -1,5 +1,5 @@
 import type { Socket } from "socket.io-client";
-import GameState from "./Game";
+import GameState from "./shared/Game";
 
 export interface ServerToClientEvents {
   updateGame: (updateGame: GameState) => void;

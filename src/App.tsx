@@ -5,12 +5,14 @@ import Header from "./components/Header";
 import GameComponents from "./components/GameComponents";
 import { GameProvider } from "./providers/GameStateProvider";
 import PreGameComponents from "./components/PreGameComponents";
+import { testing } from "models";
 
 function App() {
   const [userId, setUserId] = useLocalStorage("userId", "");
   const [userName, setUserName] = useLocalStorage("userName", "");
 
   const headerIsDisplayed = false;
+  testing();
 
   return (
     <div className="App d-flex justify-content-center align-items-center">

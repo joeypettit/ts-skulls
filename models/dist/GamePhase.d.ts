@@ -1,4 +1,4 @@
-export enum GamePhase {
+export declare enum GamePhase {
     Lobby = "LOBBY",
     PlayersReordering = "PLAYERS-REORDERING",
     SetRound = "SET-ROUND",
@@ -8,5 +8,5 @@ export enum GamePhase {
     WinRound = "WIN-ROUND",
     LoseRound = "LOSE-ROUND",
     Elimination = "ELIMINATION",
-    WinGame = "WIN-GAME",
+    WinGame = "WIN-GAME"
 }
