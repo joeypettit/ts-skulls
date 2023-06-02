@@ -1,0 +1,36 @@
+import Player from "./Player";
+import Bet from "./Bet";
+import { GamePhase } from './GamePhase';
+export default class Game {
+    private _id;
+    private _inProgress;
+    private _gamePhase;
+    private _currentRound;
+    private _firstToPlayId;
+    private _playerOrder;
+    private _players;
+    private _currentBet;
+    private _currentPlayerId;
+    constructor(_id: string, _inProgress: boolean, _gamePhase: GamePhase, _currentRound: number, _firstToPlayId: string, _playerOrder: string[], _players: Map<string, Player>, _currentBet: Bet | null, _currentPlayerId: string);
+    get id(): string;
+    set id(value: string);
+    get inProgress(): boolean;
+    set inProgress(value: boolean);
+    get gamePhase(): GamePhase;
+    set gamePhase(value: GamePhase);
+    get currentRound(): number;
+    set currentRound(value: number);
+    get firstToPlayId(): string;
+    set firstToPlayId(value: string);
+    get playerOrder(): string[];
+    set playerOrder(value: string[]);
+    get players(): Map<string, Player>;
+    set players(value: Map<string, Player>);
+    get currentBet(): Bet | null;
+    set currentBet(value: Bet | null);
+    get currentPlayerId(): string;
+    set currentPlayerId(value: string);
+    get partyLeader(): Player;
+    getPlayerById(userId: string): Player;
+    getPlayerOrderIndex(userId: string): number;
+}
