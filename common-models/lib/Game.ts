@@ -101,8 +101,6 @@ export class Game {
         }
         return partyLeader;
     }
-
-
     
     getPlayerById(userId: string){
         const player = this._players.get(userId);

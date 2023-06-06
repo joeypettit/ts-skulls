@@ -12,13 +12,4 @@ export interface ClientToServerEvents {
   startGame: (gameId: string) => void;
 }
 
-export interface InterServerEvents {
-  ping: () => void;
-}
-
-export interface SocketData {
-  name: string;
-  age: number;
-}
-
 export type ClientSocketType = Socket<ServerToClientEvents, ClientToServerEvents>;
