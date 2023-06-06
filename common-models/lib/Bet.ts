@@ -1,4 +1,4 @@
-export default interface Bet {
+export interface Bet {
     numberOfCards: number;
     betterId: string;
     rosesNeededToWin: number;

@@ -1,9 +1,8 @@
-import Player from "./Player";
-import Bet from "./Bet";
+import {Player} from "./Player";
+import {Bet} from "./Bet";
 import {GamePhase} from './GamePhase';
-import Utility from './Utility';
 
-export default class Game {
+export class Game {
 
     constructor(
         private _id: string, 

@@ -1,6 +1,6 @@
-import Card from "./Card";
+import {Card} from "./Card";
 
-export default class Player {
+export class Player {
     name: string;
     isPlayerTurn: boolean;
     id: string;
