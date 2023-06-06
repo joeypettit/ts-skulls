@@ -1,11 +1,10 @@
 import "./App.css";
-import { useState } from "react";
-import { SocketProvider } from "./socket/SocketProvider";
+import { SocketProvider } from "./providers/SocketProvider";
 import useLocalStorage from "./hooks/useLocalStorage";
 import Header from "./components/Header";
-import UserNameForm from "./components/UserNameForm";
-import EnterGameForm from "./components/EnterGameForm";
 import GameComponents from "./components/GameComponents";
+import { GameProvider } from "./providers/GameProvider";
+import PreGameComponents from "./components/PreGameComponents";
 
 function App() {
   const [userId, setUserId] = useLocalStorage("userId", "");
@@ -16,10 +15,11 @@ function App() {
   return (
     <div className="App d-flex justify-content-center align-items-center">
       {headerIsDisplayed && <Header userId={userId} />}
-      <SocketProvider userId={userId} setUserId={setUserId} userName={userName}>
-        <UserNameForm userName={userName} setUserName={setUserName} />
-        {userName && <EnterGameForm />}
-        <GameComponents userId={userId} />
+      <SocketProvider userId={userId} setUserId={setUserId}>
+        <GameProvider userId={userId} userName={userName}>
+          <PreGameComponents userName={userName} setUserName={setUserName} />
+          <GameComponents userId={userId} />
+        </GameProvider>
       </SocketProvider>
     </div>
   );

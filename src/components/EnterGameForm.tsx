@@ -1,18 +1,21 @@
 import { useRef } from "react";
-import Button from "react-bootstrap/esm/Button";
+import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useSocket } from "../socket/SocketProvider";
+import { useGameContext } from "../providers/GameProvider";
 
 function EnterGameForm() {
-  const socket = useSocket();
+  const game = useGameContext();
   const gameIdRef = useRef<HTMLInputElement | null>(null);
 
   function handleStartNewGame() {
-    socket?.createGameState();
+    game.actions.createGame();
   }
 
-  function handleEnterGame() {
-    socket?.enterExistingGame();
+  function handleEnterExistingGame(): void {
+    const gameIdInput = gameIdRef.current?.value;
+    if (gameIdInput) {
+      game.actions.enterExistingGame(gameIdInput);
+    }
   }
 
   return (
@@ -22,7 +25,7 @@ function EnterGameForm() {
       </Button>
       <div>Or</div>
       {/* enter existing game with your game id */}
-      <Form className="p-2 m-2 text-center" onSubmit={handleEnterGame}>
+      <Form className="p-2 m-2 text-center" onSubmit={handleEnterExistingGame}>
         <Form.Group>
           <Form.Label>Enter An Existing Game</Form.Label>
           <Form.Control

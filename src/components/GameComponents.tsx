@@ -1,16 +1,17 @@
-import React from "react";
-import GameLobby from "./GameLobby";
-import { useSocket } from "../socket/SocketProvider";
+import GameLobby from "./Lobby";
+import { useGameContext } from "../providers/GameProvider";
+import { GamePhase } from "common-models";
 
 export default function GameComponents({ userId }: { userId: string }) {
-  const socket = useSocket();
-  const gamePhase = socket?.gameState?.phase;
+  const { game } = useGameContext();
 
   return (
     <div>
-      {(gamePhase === "game-lobby" || gamePhase === "players-reordering") && (
-        <GameLobby userId={userId} />
-      )}
+      {game &&
+        (game?.gamePhase === GamePhase.Lobby ||
+          game?.gamePhase === GamePhase.PlayersReordering) && (
+          <GameLobby userId={userId} />
+        )}
     </div>
   );
 }
