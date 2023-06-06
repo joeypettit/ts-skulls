@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { useGameContext } from "../providers/GameStateProvider";
+import { useGameContext } from "../providers/GameProvider";
 
 function ReorderPlayers() {
   const { user, game, actions } = useGameContext();

@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import Button from "react-bootstrap/esm/Button";
+import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useGameContext } from "../providers/GameStateProvider";
+import { useGameContext } from "../providers/GameProvider";
 
 function EnterGameForm() {
   const game = useGameContext();

@@ -1,16 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import { PropsWithChildren } from "react";
 import { useSocket } from "./SocketProvider";
-import ClientGame from "../modelsClient/ClientGame";
-import type Player from "../modelsClient/Player";
+import { Game, Player } from "common-models";
 
 interface Props {
   userId: string;
   userName: string;
 }
 
-export interface ProviderValue {
-  game: ClientGame | null;
+interface GameProviderValue {
+  game: Game | null;
   user: Player | undefined;
   actions: {
     createGame: () => void;
@@ -21,7 +20,7 @@ export interface ProviderValue {
 }
 
 // create socket context
-const GameContext = React.createContext<ProviderValue | null>(null);
+const GameContext = React.createContext<GameProviderValue | null>(null);
 
 // export socket context, this will be imported into children components of provider
 // that use the socket
@@ -42,7 +41,7 @@ export function GameProvider({
   const socket = useSocket().socket;
 
   // ~~~~~~~~~~~~~ game Logic ~~~~~~~~~~~~~~~~
-  const [game, setGame] = useState<ClientGame | null>(null);
+  const [game, setGame] = useState<Game | null>(null);
   // player object of this user
   const [user, setUser] = useState<Player | undefined>(undefined);
 
@@ -52,10 +51,10 @@ export function GameProvider({
     if (socket === null) return;
     // create 'update game' socket event listener
     // when update recieved, update local game
-    socket.on("updateGame", (incomingGame) => {
+    socket.on("updateGame", (incomingGame: Game) => {
       console.log("game", incomingGame);
 
-      const updatedGame = new ClientGame(
+      const updatedGame = new Game(
         incomingGame.id,
         incomingGame.inProgress,
         incomingGame.gamePhase,
@@ -119,7 +118,7 @@ export function GameProvider({
   }
 
   // ~~~~~~ PROVIDER VALUE ~~~~~~~
-  const value: ProviderValue = {
+  const value: GameProviderValue = {
     user,
     game,
     actions: {

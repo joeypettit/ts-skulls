@@ -1,24 +1,24 @@
 import React, { useContext, useState, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 import { PropsWithChildren } from "react";
-import Utility from "../modelsClient/Utility";
 import {
+  Utility,
   ServerToClientEvents,
   ClientToServerEvents,
   ClientSocketType,
-} from "../modelsClient/socketIO";
+} from "common-models";
 
 interface Props {
   userId: string;
   setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export interface ProviderValue {
+interface SocketProviderValue {
   socket: ClientSocketType | null;
 }
 
 // create socket context
-const SocketContext = React.createContext<ProviderValue | null>(null);
+const SocketContext = React.createContext<SocketProviderValue | null>(null);
 
 // export socket context, this will be imported into children components of provider
 // that use the socket
@@ -68,7 +68,7 @@ export function SocketProvider({
   }, [userId, setSocket, setUserId]);
 
   // ~~~~~~ PROVIDER VALUE ~~~~~~~
-  const value: ProviderValue = {
+  const value: SocketProviderValue = {
     socket,
   };
 

@@ -1,7 +1,7 @@
-import { useGameContext } from "../providers/GameStateProvider";
+import { useGameContext } from "../providers/GameProvider";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { GamePhase } from "../modelsClient/GamePhase";
+import { GamePhase } from "common-models";
 import ReorderPlayers from "./ReorderPlayers";
 
 function GameLobby({ userId }: { userId: string }) {

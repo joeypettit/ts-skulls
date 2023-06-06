@@ -1,9 +1,8 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from "../models/socketIO";
-import Game from "../models/Game";
-import Utility from "../models/Utility";
-import { GamePhase } from "../models/GamePhase";
+import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from "../common-models/dist/socketIO";
+import ServerGame from "./server-models/ServerGame";
+import { GamePhase, Utility } from "common-models";
 
 // socket.io server
 const httpServer = createServer();
@@ -15,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 
 
 // Map contains all currently active game
-const activeGames = new Map<string, Game>(null);
+const activeGames = new Map<string, ServerGame>(null);
 
 
 io.on("connection", (socket) => {
@@ -29,7 +28,7 @@ io.on("connection", (socket) => {
         socket.join(gameId);
         socket.join(userId);
 
-        const game = new Game(userId, userName);
+        const game = new ServerGame(userId, userName);
         activeGames.set(gameId, game);
         console.log('game', game);
 
