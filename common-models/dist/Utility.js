@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Utility = void 0;
 var Utility = /** @class */ (function () {
     function Utility() {
     }
@@ -24,4 +25,4 @@ var Utility = /** @class */ (function () {
     };
     return Utility;
 }());
-exports.default = Utility;
+exports.Utility = Utility;

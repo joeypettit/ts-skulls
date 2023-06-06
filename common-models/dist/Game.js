@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Game = void 0;
 var Game = /** @class */ (function () {
     function Game(_id, _inProgress, _gamePhase, _currentRound, _firstToPlayId, _playerOrder, _players, _currentBet, _currentPlayerId) {
         this._id = _id;
@@ -134,4 +135,4 @@ var Game = /** @class */ (function () {
     };
     return Game;
 }());
-exports.default = Game;
+exports.Game = Game;

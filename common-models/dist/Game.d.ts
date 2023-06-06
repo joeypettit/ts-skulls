@@ -1,7 +1,7 @@
-import Player from "./Player";
-import Bet from "./Bet";
+import { Player } from "./Player";
+import { Bet } from "./Bet";
 import { GamePhase } from './GamePhase';
-export default class Game {
+export declare class Game {
     private _id;
     private _inProgress;
     private _gamePhase;
