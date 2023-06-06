@@ -53,18 +53,17 @@ export function GameProvider({
     // create 'update game' socket event listener
     // when update recieved, update local game
     socket.on("updateGame", (incomingGame: Game) => {
+      console.log("incoming game", incomingGame);
       const updatedGame = new ClientGame(incomingGame);
 
       console.log("updated,", updatedGame);
 
       if (updatedGame) {
-        console.log(updatedGame.id, "update");
-
-        // setGame(updatedGame);
-        // setUser(updatedGame.getPlayerById(userId));
-        // console.log("updateGame", updatedGame);
+        setGame(updatedGame);
+        setUser(updatedGame.getPlayerById(userId));
+        console.log("updateGame", updatedGame);
       } else {
-        throw "no updated game";
+        throw new Error("Updated Game Not Found");
       }
     });
 
@@ -96,7 +95,7 @@ export function GameProvider({
     if (gameId && socket) {
       socket.emit("toggleReorder", gameId);
     } else {
-      alert("Game Not Found");
+      throw new Error("Game Not Found");
     }
   }
 
@@ -104,7 +103,7 @@ export function GameProvider({
     if (game && socket) {
       socket.emit("startGame", game.id);
     } else {
-      alert("Game Not Found");
+      throw new Error("Game Not Found");
     }
   }
 

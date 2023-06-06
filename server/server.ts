@@ -32,8 +32,8 @@ io.on("connection", (socket) => {
 
         const game = new ServerGame(userId, userName);
         activeGames.set(gameId, game);
-        console.log('game', game);
-
+        
+        console.log('this is the game', game);
 
         io.in(gameId).emit("updateGame", game);
     })

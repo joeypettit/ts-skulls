@@ -8,8 +8,12 @@ export declare class Game {
     currentRound: number;
     firstToPlayId: string;
     playerOrder: string[];
-    players: Map<string, Player>;
+    players: {
+        [x: string]: Player;
+    };
     currentBet: Bet | null;
     currentPlayerId: string;
-    constructor(id: string, inProgress: boolean, gamePhase: GamePhase, currentRound: number, firstToPlayId: string, playerOrder: string[], players: Map<string, Player>, currentBet: Bet | null, currentPlayerId: string);
+    constructor(id: string, inProgress: boolean, gamePhase: GamePhase, currentRound: number, firstToPlayId: string, playerOrder: string[], players: {
+        [x: string]: Player;
+    }, currentBet: Bet | null, currentPlayerId: string);
 }

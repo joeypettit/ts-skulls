@@ -11,7 +11,7 @@ export class Game {
         public currentRound: number,
         public firstToPlayId: string,
         public playerOrder: string[],
-        public players: Map<string, Player>,
+        public players: {[x: string]: Player;},
         public currentBet: Bet | null,
         public currentPlayerId: string) {
     }
