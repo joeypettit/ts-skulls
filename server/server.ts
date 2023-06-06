@@ -1,6 +1,8 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from "../common-models/dist/socketIO";
+import { ServerToClientEvents, ClientToServerEvents } from "common-models";
+import {InterServerEvents, SocketData} from './server-models/SocketIO';
+
 import ServerGame from "./server-models/ServerGame";
 import { GamePhase, Utility } from "common-models";
 

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { PropsWithChildren } from "react";
 import { useSocket } from "./SocketProvider";
-import { Game, Player } from "common-models";
+import { Game, Player, GamePhase } from "common-models";
 
 interface Props {
   userId: string;
@@ -53,6 +53,7 @@ export function GameProvider({
     // when update recieved, update local game
     socket.on("updateGame", (incomingGame: Game) => {
       console.log("game", incomingGame);
+      console.log("id", incomingGame.doThing());
 
       const updatedGame = new Game(
         incomingGame.id,
@@ -65,7 +66,9 @@ export function GameProvider({
         incomingGame.currentBet,
         incomingGame.currentPlayerId
       );
+
       console.log("updated,", updatedGame);
+
       if (updatedGame) {
         console.log(updatedGame.id, "update");
 

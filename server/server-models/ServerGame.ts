@@ -9,13 +9,40 @@ export default class ServerGame extends Game {
         const gamePhase = GamePhase.Lobby;
         const currentRound = 0;
         const firstToPlayId = '';
-        const playerOrder = [];
+        const playerOrder: string[] = [];
         const currentBet = null;
         const players = new Map([[userId, new Player(userId, playerName, true)]]);
         const currentPlayerId = userId;
 
         super(id, inProgress, gamePhase, currentRound, firstToPlayId, playerOrder, players, currentBet, currentPlayerId);
         }
+
+        get partyLeader(): Player {
+        const allPlayers = this.players.values();
+        for(let player of allPlayers){
+            if(player.isPartyLeader === true){
+            return player;
+            }
+        }
+        throw new Error("No party leader found.");
+
+    }
+    
+    getPlayerById(userId: string){
+        const player = this.players.get(userId);
+        if(!player){
+            throw "In getPlayerById, id does not exist"
+        }
+        return player;
+        }
+
+    getPlayerOrderIndex(userId: string){
+        const playerIndex = this.playerOrder.findIndex((playerId)=>{
+            return userId === playerId;
+        });
+        return playerIndex;
+    }
+
 
     addNewPlayer(userId: string, userName: string){
         const newPlayer = new Player(userId, userName, false);

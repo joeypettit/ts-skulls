@@ -133,6 +133,9 @@ var Game = /** @class */ (function () {
         });
         return playerIndex;
     };
+    Game.prototype.doThing = function () {
+        console.log('thing');
+    };
     return Game;
 }());
 exports.Game = Game;

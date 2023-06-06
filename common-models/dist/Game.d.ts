@@ -33,4 +33,5 @@ export declare class Game {
     get partyLeader(): Player;
     getPlayerById(userId: string): Player;
     getPlayerOrderIndex(userId: string): number;
+    doThing(): void;
 }
