@@ -10,7 +10,7 @@ interface Props {
 }
 
 interface GameProviderValue {
-  game: Game | null;
+  game: ClientGame | null;
   user: Player | undefined;
   actions: {
     createGame: () => void;
@@ -42,7 +42,7 @@ export function GameProvider({
   const socket = useSocket().socket;
 
   // ~~~~~~~~~~~~~ game Logic ~~~~~~~~~~~~~~~~
-  const [game, setGame] = useState<Game | null>(null);
+  const [game, setGame] = useState<ClientGame | null>(null);
   // player object of this user
   const [user, setUser] = useState<Player | undefined>(undefined);
 
@@ -53,8 +53,6 @@ export function GameProvider({
     // create 'update game' socket event listener
     // when update recieved, update local game
     socket.on("updateGame", (incomingGame: Game) => {
-      console.log("game", incomingGame);
-
       const updatedGame = new ClientGame(incomingGame);
 
       console.log("updated,", updatedGame);
