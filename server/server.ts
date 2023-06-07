@@ -4,7 +4,7 @@ import { ServerToClientEvents, ClientToServerEvents } from "common-models";
 import { InterServerEvents, SocketData } from "./server-models/SocketIO";
 
 import ServerGame from "./server-models/ServerGame";
-import { GamePhase, Utility } from "common-models";
+import {GamePhase} from "common-models";
 
 // socket.io server
 const httpServer = createServer();
@@ -31,8 +31,6 @@ io.on("connection", (socket) => {
     // create new rooms based on gameId and userId
     socket.join(game.id);
     socket.join(userId);
-
-    console.log("this is the game", game);
 
     io.in(game.id).emit("updateGame", game);
   });
@@ -70,9 +68,10 @@ io.on("connection", (socket) => {
       }
       io.in(gameId).emit("updateGame", game);
     } else {
-      throw "In toggleReorder: no game found";
+      throw new Error("In toggleReorder: no game found");
     }
   });
+
   socket.on("startGame", (gameId) => {
     const game = activeGames.get(gameId);
 
