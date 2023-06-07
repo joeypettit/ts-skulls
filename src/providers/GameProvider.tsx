@@ -7,6 +7,7 @@ import { ClientGame } from "../client-models/ClientGame";
 interface Props {
   userId: string;
   userName: string;
+  setGameHasStarted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface GameProviderValue {
@@ -37,6 +38,7 @@ export function useGameContext() {
 export function GameProvider({
   userId,
   userName,
+  setGameHasStarted,
   children,
 }: PropsWithChildren<Props>) {
   const socket = useSocket().socket;
@@ -45,6 +47,12 @@ export function GameProvider({
   const [game, setGame] = useState<ClientGame | null>(null);
   // player object of this user
   const [user, setUser] = useState<Player | undefined>(undefined);
+
+  if (game) {
+    setGameHasStarted(true);
+  } else {
+    setGameHasStarted(false);
+  }
 
   // set up listeners for game updates
   useEffect(() => {

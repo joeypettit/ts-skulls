@@ -110,32 +110,32 @@ export default class ServerGame extends Game {
     }
   }
 
-  createCensoredCopy(userId: string){
+//   createCensoredCopy(userId: string){
 
-    const censoredPlayers = {};
+//     const censoredPlayers = {};
 
-    for(let key in this.players){
-        const player = {...this.players[key]}
-        if(key === userId){
-            censoredPlayers[key] = player;
-        }else{
-            player.allCards.forEach((card)=>{
+//     for(let key in this.players){
+//         const player = {...this.players[key]}
+//         if(key === userId){
+//             censoredPlayers[key] = player;
+//         }else{
+//             player.allCards.forEach((card)=>{
                 
-            })
-        }
-    }
+//             })
+//         }
+//     }
 
 
-    const copy = {
-        id: this.id,
-        inProgress: this.inProgress,
-        gamePhase: this.gamePhase,
-        currentRound: this.currentRound,
-        firstToPlayId: this.firstToPlayId,
-        playerOrder: this.playerOrder,
-        players: this.players,
-        currentBet: this.currentBet,
-        currentPlayerId: this.currentPlayerId
-    }
-  }
+//     const copy = {
+//         id: this.id,
+//         inProgress: this.inProgress,
+//         gamePhase: this.gamePhase,
+//         currentRound: this.currentRound,
+//         firstToPlayId: this.firstToPlayId,
+//         playerOrder: this.playerOrder,
+//         players: this.players,
+//         currentBet: this.currentBet,
+//         currentPlayerId: this.currentPlayerId
+//     }
+//   }
 }

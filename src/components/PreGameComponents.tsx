@@ -10,7 +10,9 @@ interface Props {
 function PreGameComponents({ userName, setUserName }: Props) {
   return (
     <>
-      <UserNameForm userName={userName} setUserName={setUserName} />
+      {!userName && (
+        <UserNameForm userName={userName} setUserName={setUserName} />
+      )}
       {userName && <EnterGameForm />}
     </>
   );
