@@ -7,7 +7,7 @@ export default class ServerGame extends Game {
     const gamePhase = GamePhase.Lobby;
     const currentRound = 0;
     const firstToPlayId = "";
-    const playerOrder: string[] = [];
+    const playerOrder: string[] = [userId];
     const currentBet = null;
     const players = { [userId]: new Player(userId, playerName, true) };
     const currentPlayerId = userId;
@@ -53,6 +53,7 @@ export default class ServerGame extends Game {
   addNewPlayer(userId: string, userName: string) {
     const newPlayer = new Player(userId, userName, false);
     this.players[userId] = newPlayer;
+    this.playerOrder.push(userId);
     return this;
   }
 
