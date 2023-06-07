@@ -48,7 +48,7 @@ function GameLobby({ userId }: { userId: string }) {
       <p>Order Of Play:</p>
       <ul>
         {game?.playerOrder.map((playerId, index) => {
-          const playerName = game.players.get(playerId)?.name;
+          const playerName = game.players[playerId].name;
           const playerOrderNum = index + 1;
           return <li key={playerId}>{playerOrderNum + ": " + playerName}</li>;
         })}

@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { PropsWithChildren } from "react";
 import { useSocket } from "./SocketProvider";
-import { Game, Player } from "common-models";
+import { Game, Player, GamePhase } from "common-models";
+import { ClientGame } from "../client-models/ClientGame";
 
 interface Props {
   userId: string;
@@ -9,7 +10,7 @@ interface Props {
 }
 
 interface GameProviderValue {
-  game: Game | null;
+  game: ClientGame | null;
   user: Player | undefined;
   actions: {
     createGame: () => void;
@@ -41,7 +42,7 @@ export function GameProvider({
   const socket = useSocket().socket;
 
   // ~~~~~~~~~~~~~ game Logic ~~~~~~~~~~~~~~~~
-  const [game, setGame] = useState<Game | null>(null);
+  const [game, setGame] = useState<ClientGame | null>(null);
   // player object of this user
   const [user, setUser] = useState<Player | undefined>(undefined);
 
@@ -52,28 +53,17 @@ export function GameProvider({
     // create 'update game' socket event listener
     // when update recieved, update local game
     socket.on("updateGame", (incomingGame: Game) => {
-      console.log("game", incomingGame);
+      console.log("incoming game", incomingGame);
+      const updatedGame = new ClientGame(incomingGame);
 
-      const updatedGame = new Game(
-        incomingGame.id,
-        incomingGame.inProgress,
-        incomingGame.gamePhase,
-        incomingGame.currentRound,
-        incomingGame.firstToPlayId,
-        incomingGame.playerOrder,
-        incomingGame.players,
-        incomingGame.currentBet,
-        incomingGame.currentPlayerId
-      );
       console.log("updated,", updatedGame);
-      if (updatedGame) {
-        console.log(updatedGame.id, "update");
 
-        // setGame(updatedGame);
-        // setUser(updatedGame.getPlayerById(userId));
-        // console.log("updateGame", updatedGame);
+      if (updatedGame) {
+        setGame(updatedGame);
+        setUser(updatedGame.getPlayerById(userId));
+        console.log("updateGame", updatedGame);
       } else {
-        throw "no updated game";
+        throw new Error("Updated Game Not Found");
       }
     });
 
@@ -105,7 +95,7 @@ export function GameProvider({
     if (gameId && socket) {
       socket.emit("toggleReorder", gameId);
     } else {
-      alert("Game Not Found");
+      throw new Error("Game Not Found");
     }
   }
 
@@ -113,7 +103,7 @@ export function GameProvider({
     if (game && socket) {
       socket.emit("startGame", game.id);
     } else {
-      alert("Game Not Found");
+      throw new Error("Game Not Found");
     }
   }
 
