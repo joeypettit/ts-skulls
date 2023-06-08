@@ -17,6 +17,7 @@ interface GameProviderValue {
     createGame: () => void;
     enterExistingGame: (gameId: string) => void;
     toggleReorder: () => void;
+    addPlayerToOrderArray: () => void;
     startGame: () => void;
   };
 }
@@ -83,8 +84,10 @@ export function GameProvider({
 
   // ~~~~~ Game actions (outgoing) ~~~~~~
   function createGame(): void {
-    if (userName) {
-      socket?.emit("createGame", userName);
+    if (userName && socket) {
+      socket.emit("createGame", userName);
+    } else if (game && !socket) {
+      throw new Error("Socket Not Found");
     } else {
       alert("Please enter your name!");
     }
@@ -93,15 +96,19 @@ export function GameProvider({
   function enterExistingGame(gameId: string): void {
     if (userName && socket) {
       socket.emit("enterExistingGame", userName, gameId);
+    } else if (game && !socket) {
+      throw new Error("Socket Not Found");
     } else {
       alert("Please enter your name!");
     }
   }
 
   function toggleReorder(): void {
-    const gameId = game?.id;
+    const gameId = game!.id;
     if (gameId && socket) {
       socket.emit("toggleReorder", gameId);
+    } else if (game && !socket) {
+      throw new Error("Socket Not Found");
     } else {
       throw new Error("Game Not Found");
     }
@@ -110,6 +117,18 @@ export function GameProvider({
   function startGame(): void {
     if (game && socket) {
       socket.emit("startGame", game.id);
+    } else if (game && !socket) {
+      throw new Error("Socket Not Found");
+    } else {
+      throw new Error("Game Not Found");
+    }
+  }
+
+  function addPlayerToOrderArray(): void {
+    if (game && socket) {
+      socket.emit("addPlayerToOrderArray", game.id);
+    } else if (game && !socket) {
+      throw new Error("Socket Not Found");
     } else {
       throw new Error("Game Not Found");
     }
@@ -123,6 +142,7 @@ export function GameProvider({
       createGame,
       enterExistingGame,
       toggleReorder,
+      addPlayerToOrderArray,
       startGame,
     },
   };

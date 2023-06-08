@@ -56,20 +56,39 @@ io.on("connection", (socket) => {
     console.log(gameId);
     const game = activeGames.get(gameId);
 
-    console.log("game", activeGames);
-
     if (game) {
       if (game.gamePhase === GamePhase.Lobby) {
         game.gamePhase = GamePhase.PlayersReordering;
+        game.clearOrderArray();
       } else if (game.gamePhase === GamePhase.PlayersReordering) {
         game.gamePhase = GamePhase.Lobby;
       } else {
-        throw new Error("in toggleReorder: incorrect gamephase type");
+        throw new Error("Incorrect Gamephase Type");
       }
       io.in(gameId).emit("updateGame", game);
     } else {
-      throw new Error("In toggleReorder: no game found");
+        throw new Error(`Game ${gameId} Not Found`);
     }
+  });
+
+  socket.on("addPlayerToOrderArray", (gameId)=>{
+    const userId = String(socket.handshake.query.userId);
+    const game = activeGames.get(gameId);
+
+    if(game){
+        game.addPlayerToOrderArray(userId);
+
+        const playersObjectLength = Object.keys(game.players).length;
+        if(game.playerOrder.length >= playersObjectLength){
+            game.gamePhase = GamePhase.Lobby;
+        }
+    } else {
+      throw new Error(`Game ${gameId} Not Found`);
+    }
+
+    
+
+    io.in(gameId).emit("updateGame", game);
   });
 
   socket.on("startGame", (gameId) => {
