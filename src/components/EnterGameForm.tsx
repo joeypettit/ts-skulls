@@ -11,7 +11,8 @@ function EnterGameForm() {
     game.actions.createGame();
   }
 
-  function handleEnterExistingGame(): void {
+  function handleEnterExistingGame(e: React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault();
     const gameIdInput = gameIdRef.current?.value;
     if (gameIdInput) {
       game.actions.enterExistingGame(gameIdInput);
@@ -25,7 +26,10 @@ function EnterGameForm() {
       </Button>
       <div>Or</div>
       {/* enter existing game with your game id */}
-      <Form className="p-2 m-2 text-center" onSubmit={handleEnterExistingGame}>
+      <Form
+        className="p-2 m-2 text-center"
+        onSubmit={(e) => handleEnterExistingGame(e)}
+      >
         <Form.Group>
           <Form.Label>Enter An Existing Game</Form.Label>
           <Form.Control

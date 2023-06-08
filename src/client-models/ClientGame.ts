@@ -28,7 +28,7 @@ export class ClientGame extends Game {
   getPlayerById(userId: string) {
     const player = this.players[userId];
     if (!player) {
-      throw new Error("In getPlayerById, id does not exist");
+      throw new Error(`In getPlayerById, id ${userId}does not exist`);
     }
     return player;
   }
