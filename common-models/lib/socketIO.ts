@@ -9,6 +9,7 @@ export interface ClientToServerEvents {
   createGame: (userName: string) => void;
   enterExistingGame: (userName: string, gameId: string) => void;
   toggleReorder: (gameId: string) => void;
+  addPlayerToOrderArray: (gameId: string) => void;
   startGame: (gameId: string) => void;
 }
 

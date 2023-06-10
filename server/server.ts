@@ -4,7 +4,7 @@ import { ServerToClientEvents, ClientToServerEvents } from "common-models";
 import { InterServerEvents, SocketData } from "./server-models/SocketIO";
 
 import ServerGame from "./server-models/ServerGame";
-import {GamePhase} from "common-models";
+import { GamePhase } from "common-models";
 
 // socket.io server
 const httpServer = createServer();
@@ -38,17 +38,17 @@ io.on("connection", (socket) => {
   socket.on("enterExistingGame", (userName, gameId) => {
     const userId = String(socket.handshake.query.userId);
 
-    // create new rooms based on gameId and userId
-    socket.join(gameId);
-    socket.join(userId);
+    console.log("existingGame", userName, gameId, userId);
 
     const game = activeGames.get(gameId);
 
     if (game) {
-      game.addNewPlayer(userName, userId);
-      io.in(gameId).emit("updateGame", game);
+      game.addNewPlayer(userId, userName);
+      socket.join(game.id);
+      socket.join(userId);
+      io.in(game.id).emit("updateGame", game);
     } else {
-      // emit error message
+      console.log(`Game ${gameId} not found.`);
     }
   });
 
@@ -56,20 +56,38 @@ io.on("connection", (socket) => {
     console.log(gameId);
     const game = activeGames.get(gameId);
 
-    console.log("game", activeGames);
-
     if (game) {
       if (game.gamePhase === GamePhase.Lobby) {
         game.gamePhase = GamePhase.PlayersReordering;
+        game.clearOrderArray();
+        game.addPlayerToOrderArray(game.partyLeader.id);
       } else if (game.gamePhase === GamePhase.PlayersReordering) {
         game.gamePhase = GamePhase.Lobby;
       } else {
-        throw new Error("in toggleReorder: incorrect gamephase type");
+        throw new Error(`Incorrect Gamephase Type: ${game.gamePhase}`);
       }
       io.in(gameId).emit("updateGame", game);
     } else {
-      throw new Error("In toggleReorder: no game found");
+      throw new Error(`Game ${gameId} Not Found`);
     }
+  });
+
+  socket.on("addPlayerToOrderArray", (gameId) => {
+    const userId = String(socket.handshake.query.userId);
+    const game = activeGames.get(gameId);
+
+    if (game) {
+      game.addPlayerToOrderArray(userId);
+
+      const playersObjectLength = Object.keys(game.players).length;
+      if (game.playerOrder.length >= playersObjectLength) {
+        game.gamePhase = GamePhase.Lobby;
+      }
+    } else {
+      throw new Error(`Game ${gameId} Not Found`);
+    }
+
+    io.in(gameId).emit("updateGame", game);
   });
 
   socket.on("startGame", (gameId) => {

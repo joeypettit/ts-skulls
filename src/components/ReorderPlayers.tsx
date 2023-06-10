@@ -5,28 +5,44 @@ import { useGameContext } from "../providers/GameProvider";
 
 function ReorderPlayers() {
   const { user, game, actions } = useGameContext();
-  const [userAddedToOrder, setUserAddedToOrder] = useState<boolean>(false);
+  const [userAddedToOrderArray, setUserAddedToOrderArray] =
+    useState<boolean>(false);
 
-  function handleReorder() {}
+  function handleNextButton() {
+    actions.addPlayerToOrderArray();
+  }
 
   useEffect(() => {
-    setUserAddedToOrder(false);
-  }, [game?.gamePhase]);
+    if (game!.playerOrder.includes(user!.id)) {
+      setUserAddedToOrderArray(true);
+    }
+  }, [game!.playerOrder]);
+
+  useEffect(() => {
+    setUserAddedToOrderArray(false);
+  }, [game!.gamePhase]);
 
   return (
     <Container className="d-flex flex-column justify-content-center">
       <div className="text-danger">
         <h4>
           The Player to the Left of{" "}
-          {game?.getPlayerById(game?.currentPlayerId)?.name}, Press Next
+          {
+            game!.getPlayerById(game!.playerOrder[game!.playerOrder.length - 1])
+              .name
+          }
+          , Press Next
         </h4>
-        {!user?.isPartyLeader && (
+        {!user!.isPartyLeader && (
           <Button
             size="lg"
-            onClick={handleReorder}
-            disabled={userAddedToOrder ? true : false}
+            onClick={() => {
+              const nextIndexNum = game!.playerOrder.length;
+              handleNextButton();
+            }}
+            disabled={userAddedToOrderArray ? true : false}
           >
-            {userAddedToOrder ? "Added" : "Next"}
+            {userAddedToOrderArray ? "Added" : "Next"}
           </Button>
         )}
       </div>

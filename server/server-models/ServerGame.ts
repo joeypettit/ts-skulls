@@ -54,7 +54,15 @@ export default class ServerGame extends Game {
     const newPlayer = new Player(userId, userName, false);
     this.players[userId] = newPlayer;
     this.playerOrder.push(userId);
-    return this;
+    return newPlayer;
+  }
+
+  clearOrderArray(){
+    this.playerOrder = [];
+  }
+
+  addPlayerToOrderArray(userId: string){
+    this.playerOrder.push(userId);
   }
 
   prepNewRound() {

@@ -25,10 +25,14 @@ export class ClientGame extends Game {
     throw new Error("No party leader found.");
   }
 
+  get lastPlayerInOrderArray(): Player {
+    return this.getPlayerById(this.playerOrder[this.playerOrder.length - 1]);
+  }
+
   getPlayerById(userId: string) {
     const player = this.players[userId];
     if (!player) {
-      throw new Error("In getPlayerById, id does not exist");
+      throw new Error(`In getPlayerById, id ${userId}does not exist`);
     }
     return player;
   }
