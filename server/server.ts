@@ -48,7 +48,7 @@ io.on("connection", (socket) => {
       socket.join(userId);
       io.in(game.id).emit("updateGame", game);
     } else {
-      throw new Error(`Game ${gameId} Not Found`);
+      console.log(`Game ${gameId} not found.`);
     }
   });
 
