@@ -60,6 +60,7 @@ io.on("connection", (socket) => {
       if (game.gamePhase === GamePhase.Lobby) {
         game.gamePhase = GamePhase.PlayersReordering;
         game.clearOrderArray();
+        game.addPlayerToOrderArray(game.partyLeader.id);
       } else if (game.gamePhase === GamePhase.PlayersReordering) {
         game.gamePhase = GamePhase.Lobby;
       } else {
