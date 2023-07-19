@@ -11,7 +11,7 @@ function GameLobby({ userId }: { userId: string }) {
     actions.toggleReorder();
   }
 
-  function handleReadyToPlay(): void {
+  function handleStartGame(): void {
     actions.startGame();
   }
 
@@ -61,7 +61,7 @@ function GameLobby({ userId }: { userId: string }) {
             disabled={
               game?.gamePhase === GamePhase.PlayersReordering ? true : false
             }
-            onClick={() => handleReadyToPlay()}
+            onClick={() => handleStartGame()}
           >
             Start
           </Button>

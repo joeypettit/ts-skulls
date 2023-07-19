@@ -115,6 +115,7 @@ export function GameProvider({
   }
 
   function startGame(): void {
+    console.log("log");
     if (game && socket) {
       socket.emit("startGame", game.id);
     } else if (game && !socket) {

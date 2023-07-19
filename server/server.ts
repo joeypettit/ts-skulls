@@ -91,10 +91,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("startGame", (gameId) => {
+    const userId = String(socket.handshake.query.userId);
     const game = activeGames.get(gameId);
 
     if (game) {
       game.prepNewRound();
+      game.getCensoredCopy(userId);
     }
   });
 });

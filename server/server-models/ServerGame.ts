@@ -1,4 +1,4 @@
-import { Game, Utility, Player, GamePhase } from "common-models";
+import { Game, Utility, Player, GamePhase, Card } from "common-models";
 
 export default class ServerGame extends Game {
   constructor(userId: string, playerName: string) {
@@ -57,11 +57,11 @@ export default class ServerGame extends Game {
     return newPlayer;
   }
 
-  clearOrderArray(){
+  clearOrderArray() {
     this.playerOrder = [];
   }
 
-  addPlayerToOrderArray(userId: string){
+  addPlayerToOrderArray(userId: string) {
     this.playerOrder.push(userId);
   }
 
@@ -118,32 +118,33 @@ export default class ServerGame extends Game {
     }
   }
 
-//   createCensoredCopy(userId: string){
+  getCensoredGame(userId: string) {
+    const censoredPlayers: {
+      [key: string]: Player;
+    } = {};
 
-//     const censoredPlayers = {};
+    for (let key in this.players) {
+      const player = { ...this.players[key] };
+      if (key !== userId) {
+        player.allCards.forEach((card) => {
+          card.isRevealed = false;
+          card.isSkull = "censored";
+          card.id = "censored";
+        });
+      }
+      censoredPlayers[key] = player;
+    }
 
-//     for(let key in this.players){
-//         const player = {...this.players[key]}
-//         if(key === userId){
-//             censoredPlayers[key] = player;
-//         }else{
-//             player.allCards.forEach((card)=>{
-                
-//             })
-//         }
-//     }
-
-
-//     const copy = {
-//         id: this.id,
-//         inProgress: this.inProgress,
-//         gamePhase: this.gamePhase,
-//         currentRound: this.currentRound,
-//         firstToPlayId: this.firstToPlayId,
-//         playerOrder: this.playerOrder,
-//         players: this.players,
-//         currentBet: this.currentBet,
-//         currentPlayerId: this.currentPlayerId
-//     }
-//   }
+    const censoredGame = new Game(
+      this.id,
+      this.inProgress,
+      this.gamePhase,
+      this.currentRound,
+      this.firstToPlayId,
+      this.playerOrder,
+      censoredPlayers,
+      this.currentBet,
+      this.currentPlayerId
+    );
+  }
 }
